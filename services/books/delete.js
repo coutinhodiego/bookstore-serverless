@@ -1,5 +1,6 @@
 const Book = require('../../database/models/Book')
 const db = require('../../database/connection')
+const { successResponse, errorResponse } = require('../../util/responses')
 
 module.exports.handler = async (event, context) => {
     context.callbackWaitsForEmptyEventLoop = false;
@@ -11,15 +12,9 @@ module.exports.handler = async (event, context) => {
         db.createConnection()
 
         const book = await Book.findByIdAndDelete(id)
-        return {
-            statusCode : 200,
-            body: JSON.stringify(book)
-        }
-    } catch (error) {
-        return {
-            statusCode: 500,
-            body: JSON.stringify({ statusCode: 500, message: error.message })
-        }
-    }
+        return successResponse(book)
 
+    } catch (error) {
+        return errorResponse(error)
+    }
 }

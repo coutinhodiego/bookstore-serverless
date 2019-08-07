@@ -5,14 +5,11 @@ const { successResponse, errorResponse } = require('../../util/responses')
 module.exports.handler = async (event, context) => {
     context.callbackWaitsForEmptyEventLoop = false;
 
-    const { id } = event.pathParameters
-    const body = JSON.parse(event.body)
-
     try {
         //open mongodb connection
         db.createConnection()
 
-        const books = await Book.findByIdAndUpdate(id, body)
+        const books = await Book.find()
         return successResponse(books)
         
     } catch (error) {

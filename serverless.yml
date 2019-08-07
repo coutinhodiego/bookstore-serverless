@@ -20,10 +20,17 @@ functions:
           method: post
   
   loadBooks:
-    handler: services/books/load.handler
+    handler: services/books/loadAll.handler
     events:
       - http:
           path: books
+          method: get
+
+  loadBook:
+    handler: services/books/load.handler
+    events:
+      - http:
+          path: books/{id}
           method: get
 
   updateBook:
