@@ -1,0 +1,41 @@
+service: bookstore-crud
+app: bookstore-crud-app
+org: diegocoutinho
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: us-east-1
+  environment:
+    MONGO_URI: ${ssm:/db/mongo_uri~true}
+
+
+functions:
+  createBook:
+    handler: services/books/create.handler
+    events:
+      - http:
+          path: books
+          method: post
+  
+  loadBooks:
+    handler: services/books/load.handler
+    events:
+      - http:
+          path: books
+          method: get
+
+  updateBook:
+    handler: services/books/update.handler
+    events:
+      - http:
+          path: books/{id}
+          method: put
+
+  deleteBook:
+    handler: services/books/delete.handler
+    events:
+      - http:
+          path: books/{id}
+          method: delete
